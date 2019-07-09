@@ -1,0 +1,1 @@
+This directory holds practice files and exercises from Launch School's RB130 course.
