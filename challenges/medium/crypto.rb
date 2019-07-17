@@ -1,4 +1,3 @@
-require "pry"
 class Crypto
   def initialize(text)
     @text = text
@@ -21,27 +20,30 @@ class Crypto
       add = normalized[x*splitter, splitter]
       segments << add unless !!!add || add == ""
     end
-    binding.pry
     segments
   end
 
   def ciphertext
-    textual = self.plaintext_segments
-    chars = Array.new
-    self.size.times do |i|
-      (self.size - 1).times do |j|
-        chars << textual[j][i]
+    cipher = Array.new
+    rows = self.plaintext_segments
+    rows.each_index do |i|
+      rows.each.with_index do |row, j|
+        cipher << row[i]
       end
     end
-    chars.join
+    cipher.join
   end
 
   def normalize_ciphertext
-    cipher = self.ciphertext
-    (self.size - 1).times do |x|
-      cipher.insert(self.size-1+self.size*x, " ")
+    rows = self.plaintext_segments
+    cipher = Array.new
+    self.size.times do |i|
+      rows.each_index do |j|
+        cipher << rows[j][i] if j < rows.size
+      end
+      cipher << " "
     end
-    cipher.rstrip
+    cipher.join.rstrip
   end
 
   private
